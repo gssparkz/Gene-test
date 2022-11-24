@@ -67,7 +67,9 @@ pipeline{
                 
                 script{
                     
+                    timeout(time: 1, unit: 'HOURS'){
                     waitForQualityGate abortPipeline: true, credentialsId: 'jenkins-sonar-token'
+                    }
                 }
             }
         }
