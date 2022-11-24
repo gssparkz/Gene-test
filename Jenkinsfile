@@ -45,21 +45,6 @@ pipeline{
         }
 
 
-
-        /*stage('Maven Build'){
-            
-            steps{
-                
-                script{
-                    
-                    sh 'mvn clean install'
-                }
-            }
-        }
-
-        */
-
-
         stage('Static code analysis'){
             
             steps{
@@ -82,7 +67,7 @@ pipeline{
                 
                 script{
                     
-                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonar-token'
+                    waitForQualityGate abortPipeline: true, credentialsId: 'jenkins-sonar-token'
                 }
             }
         }
