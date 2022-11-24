@@ -8,15 +8,24 @@ pipeline{
      
     stages {
         
-        stage('Git Checkout'){
-            
-            steps{
-                
-                script{
-                    
-                    git branch: 'dev', url: 'https://github.com/gssparkz/Gene-test.git'
+        stage('Git Checkout'){           
+                          
+                             
+             steps{
+                echo 'Brach to build : ' + params.build_tag
+                checkout([$class: 'GitSCM',
+                          branches: [[name: "${params.build_tag}"]],
+                          doGenerateSubmoduleConfigurations: false,
+                          extensions: [],
+                          gitTool: 'Default',
+                          submoduleCfg: [],
+                          userRemoteConfigs: [[url: 'https://github.com/gssparkz/Gene-test.git']],
+                          
+                ])
                 }
-            }
+            
+
+            
         }
 
        stage('Unit Testing'){
