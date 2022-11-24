@@ -23,39 +23,30 @@ pipeline{
                           
                 ])
                 }
-            
-
-            
+                        
         }
 
-       stage('Unit Testing'){
-            
-            steps{
-                
-                script{
-                    
-                    sh 'mvn test'
-                }
+       stage('Run tests') {
+          steps{
+            sh 'mvn clean test'
+            step([$class: 'JacocoPublisher', 
+                execPattern: 'target/*.exec',
+                classPattern: 'target/classes',
+                sourcePattern: 'src/main/java',
+                exclusionPattern: '**/util/**,**/domain/**,**/springboot/*.class,**/exception/**,**/configuration/**,src/test*'
+            ])
+          } 
+        }
+        
+        stage('Build project') {
+            steps {
+                sh 'mvn -DskipTests clean package'
             }
         }
 
 
 
-        stage('Integration Testing'){
-            
-            steps{
-                
-                script{
-                    
-                    sh 'mvn verify -DskipUnitTests'
-                }
-            }
-        }
-
-
-
-
-        stage('Maven Build'){
+        /*stage('Maven Build'){
             
             steps{
                 
@@ -65,6 +56,8 @@ pipeline{
                 }
             }
         }
+
+        */
 
 
         stage('Static code analysis'){
